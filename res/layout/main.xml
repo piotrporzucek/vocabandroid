@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@android:color/background_light"
+    android:orientation="horizontal" >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Kursy"
+        android:onClick="showCourses"
+        android:padding="0dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_kursy" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Ustawienia Kursow"
+        android:onClick="showCoursesSettings"
+        android:padding="0dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_ust_kursow" />
+
+</LinearLayout>

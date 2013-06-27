@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="shared"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="libs/requestfactory-client.jar" sourcepath="libs/requestfactory-client-src.jar"/>
+	<classpathentry kind="lib" path="libs/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-core-1.0.0.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-core-1.0.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-rest-template-1.0.0.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="libs/spring-android-rest-template-1.0.0.RELEASE.jar" sourcepath="C:/Users/pporzuce/.m2/repository/org/springframework/android/spring-android-rest-template/1.0.0.RELEASE/spring-android-rest-template-1.0.0.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-core-asl-1.9.7.jar"/>
+	<classpathentry kind="lib" path="libs/jackson-mapper-asl-1.9.7.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/learningWordsLayout"
+    android:layout_gravity="center"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/wordFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        
+         >
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+        android:background="@android:color/background_light"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/answer_button"
+            android:layout_width="fill_parent"  
+            android:layout_height="wrap_content"          
+            android:background="@color/learningStartButtonColor"
+            android:onClick="answer"
+            android:text="@string/answer_button"
+            android:textColor="@android:color/black"
+            android:textSize="25dp"            
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/after_anwer_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/bad_button"
+                android:layout_width="wrap_content"                
+                android:layout_height="wrap_content"
+                android:background="@color/learningStartButtonColor"
+                android:onClick="badAnswer"
+                android:text="@string/bad_button"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/unsure_button"
+                android:layout_width="wrap_content"                
+                android:layout_height="wrap_content"
+                android:background="@color/learningStartButtonColor"
+                android:onClick="unsureAnswer"
+                android:text="@string/unsure_button"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/well_button"
+                android:layout_width="wrap_content"                
+                android:layout_height="wrap_content"
+                android:background="@color/learningStartButtonColor"
+                android:onClick="goodAnswer"
+                android:text="@string/well_button"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

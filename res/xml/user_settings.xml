@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+      
+    <ListPreference
+        android:dialogTitle="@string/user_prefferences_dialog_title"
+        android:entries="@array/word_amounts"
+        android:entryValues="@array/word_amounts_values"
+        android:key="@string/selected_word_amount_daily"
+        android:summary="@string/selected_word_amount_daily_summary"
+        android:defaultValue="@string/selected_word_amount_daily_default"
+        android:title="@string/selected_word_amount_daily_summary" 
+     >
+    </ListPreference>
+
+
+
+</PreferenceScreen>
