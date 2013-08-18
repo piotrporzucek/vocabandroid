@@ -4,7 +4,6 @@ import android.net.Uri;
 
 public class WordProviderMetaData {
 	public static final String AUTHORITY = "pl.egalit.vocab.WordProvider";
-	public static final String DATABASE_NAME = "courses.db";
 	public static final int DATABASE_VERSION = 1;
 	public static final String WORDS_TABLE_NAME = "words";
 	public static final Uri CONTENT_NEW_WORDS_URI = Uri.parse("content://"
@@ -17,6 +16,8 @@ public class WordProviderMetaData {
 			+ AUTHORITY + "/words/#");
 	public static final Uri CONTENT_WORDS_URI_STATE = Uri.parse("content://"
 			+ AUTHORITY + "/words/state/#/#");
+	public static final Uri CONTENT_SEARCH_WORDS_URI = Uri.parse("content://"
+			+ AUTHORITY + "/words/search");
 
 	private WordProviderMetaData() {
 	};

@@ -39,9 +39,9 @@ public class ChooseCourseActivity extends SherlockFragmentActivity {
 				.newTab()
 				.setText(R.string.currentCourses)
 				.setTabListener(
-						new TabListener<CurrentCourseListFragment>(this,
+						new TabListener<ChooseActiveCoursesListFragment>(this,
 								"currentCourses",
-								CurrentCourseListFragment.class));
+								ChooseActiveCoursesListFragment.class));
 		actionBar.addTab(tab);
 		tab = actionBar
 				.newTab()
@@ -53,8 +53,10 @@ public class ChooseCourseActivity extends SherlockFragmentActivity {
 
 		actionBar.addTab(tab);
 		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
+		actionBar.setIcon(getResources().getDrawable(
+				R.drawable.vokabes_icon_small));
 	}
 
 	public static class TabListener<T extends Fragment> implements

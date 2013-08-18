@@ -28,7 +28,6 @@ public class LearnIntroFragment extends Fragment {
 				false);
 
 		ParcelableCourse pc = getArguments().getParcelable(COURSE_PROPERTY);
-
 		TextView newWordsText = (TextView) view
 				.findViewById(R.id.learn_intro_new_words);
 		TextView repeatsText = (TextView) view

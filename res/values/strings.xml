@@ -1,80 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Menu item text [CHAR LIMIT=NONE] -->
-    <string name="accounts">Accounts</string>
-
-    <!-- Dialog button [CHAR LIMIT=NONE] -->
-    <string name="add_account">Add account...</string>
-
+    
     <!-- Name of the application in the launcher [CHAR LIMIT=NONE] -->
-    <string name="app_name">Vocab</string>
-
-    <!-- Dialog title text [CHAR LIMIT=NONE] -->
-    <string name="attention">Attention</string>
-
-    <!-- Button text [CHAR LIMIT=NONE] -->
-    <string name="connect">Connect</string>
-
-    <!-- Message text for "Connect" screen [CHAR LIMIT=NONE] -->
-    <string name="connect_text">This application requests permission to connect your mobile device to the cloud.</string>
-
-    <!-- Header text for "Connect" screen [CHAR LIMIT=NONE] -->
-    <string name="connect_to_the_cloud">Connect To The Cloud</string>
-
-    <!-- Header text for "Connected" screen [CHAR LIMIT=NONE] -->
-    <string name="connected_to_the_cloud">Connected To The Cloud</string>
-
-    <!-- Message text [CHAR LIMIT=NONE] -->
-    <string name="contacting_server">Contacting server...</string>
-
-    <!-- Button text [CHAR LIMIT=NONE] -->
-    <string name="disconnect">Disconnect</string>
-
-    <!-- Informational text for "Connected" screen with placeholder for account name [CHAR LIMIT=NONE] -->
-    <string name="disconnect_text">This device is currently connected to the cloud as %1$s.</string>
-
-    <!-- Footer text for "Connect" screen [CHAR LIMIT=NONE] -->
-    <string name="do_you_want_to_connect">Do you want to connect?</string>
-
-    <!-- Footer text for "Disconnect" screen [CHAR LIMIT=NONE] -->
-    <string name="do_you_want_to_disconnect">Do you want to disconnect?</string>
-
-    <!-- Initial "hello, world" informational message [CHAR LIMIT=NONE] -->
-    <string name="hello_world_info_text">Press the \"Say Hello\" button to receive a message from the App Engine server.</string>
-
-    <!-- Initial "hello, world" response message [CHAR LIMIT=NONE] -->
-    <string name="hello_world_text"></string>
-
-    <!-- Dialog message text [CHAR LIMIT=NONE] -->
-    <string name="needs_account">To receive notifications from this app, you must first create an account.</string>
-
-    <!-- Notification message [CHAR LIMIT=NONE] -->
-    <string name="registration_error">Failed to register/unregister %1$s.</string>
-
-    <!-- Notification message [CHAR LIMIT=NONE] -->
-    <string name="registration_succeeded">Registered %1$s for C2DM messaging.</string>
-
-    <!-- Button text [CHAR LIMIT=NONE] -->
-    <string name="say_hello">Say Hello</string>
-
-    <!-- List view header text [CHAR LIMIT=NONE] -->
-    <string name="select_account">Select the account you wish to authorize:</string>
-
-    <!-- Dialog button text [CHAR LIMIT=NONE] -->
-    <string name="skip">Skip</string>
-
-    <!-- Notification message [CHAR LIMIT=NONE] -->
-    <string name="unregistration_succeeded">Unegistered %1$s for C2DM messaging.</string>
-    <string name="schoolName">Österreich Institut Wroclaw</string>
-    <string name="splashText">Aplikacja Vocab</string>
-    <string name="more">more >></string>
-    <string name="remove_courses">Usun</string>
-    <string name="save_courses">Zapisz</string>
-    <string name="saveCoursesDialog_title">Zapisz kursy</string>
-    <string name="saveCoursesDialog_ok">Zapisz</string>
+    <string name="app_name">Vokabes</string>    
+    <string name="remove_courses">Delete</string>
+    <string name="save_courses">Save</string>
+    <string name="saveCoursesDialog_title">Save courses</string>
+    <string name="saveCoursesDialog_ok">Save</string>
     <string name="saveCoursesDialog_cancel">Cancel</string>
-    <string name="saveCoursesDialog_message">Slownictwo oraz postepy bedzie dostepne tylko dla zaznaczonych kursow. Czy kontynuowac?</string>
+    <string name="saveCoursesDialog_message">Selected courses won\'t available in the app anymore. Do you want to continue?</string>
     <string name="currentCourses">Current</string>
     <string name="archiveCourses">Archived</string>
     <string name="incorrectCoursePassword">Bad password. Please contact your teacher.</string>
@@ -83,15 +18,36 @@
     <string name="cancel">Cancel</string>
     <string name="choose_course">Select your course(s)</string>
     <string name="startLearning">Start learning ></string>
+    <string name="learnButton">Learn</string>
+    <string name="coursesButton">Courses</string>
     <string name="newWords">New words: </string>
     <string name="repeats">Repeats: </string>
-	<string name="user_prefferences_dialog_title">Settings</string>
+	<string name="user_prefferences_dialog_title">How many words daily?</string>
 	<string name="selected_word_amount_daily">selected_word_amount_daily</string>
-	<string name="selected_word_amount_daily_summary">Wybierz ilosc slow dziennie</string>
+	<string name="selected_word_amount_daily_summary">Amount of words daily</string>
 	<string name="selected_word_amount_daily_default">10</string>
 	<string name="user_settings">Settings</string>
 	<string name="answer_button">Check</string>
 	<string name="bad_button">no idea</string>
 	<string name="unsure_button">unsure</string>
-	<string name="well_button">well</string>
+	<string name="well_button">OK</string>
+	<string name="more">more</string>		
+	<string name="exampleTitle">Example</string>
+	<string name="cityTitle">City</string>
+	<string name="citySummary">Your city</string>
+	<string name="cityDialogTitle">Choose your city</string>
+	<string name="schoolTitle">School</string>
+	<string name="schoolSummary">Your school</string>
+	<string name="schoolDialogTitle">Choose your school</string>
+	<string name="exitPreferenceLink">Click to continue</string>
+	<string name="selected_school_id">selected_school_id</string>
+	<string name="selected_city">selected_city</string>
+	<string name="schoolSettings">School Settings</string>
+	<string name="search_hint">Search words</string>
+	<string name="app_label">Applabel</string>
+	<string name="menu_search">Search</string>
+	<string name="search_no_results">No results.</string>
+	<string name="not_supported_language">This language is not supported by your device</string>
+	<string name="noConnection">Please turn Internet connection on.</string>
+	<string name="noConnectionDialogTile">Internet connection required</string>
 </resources>

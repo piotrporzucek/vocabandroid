@@ -3,7 +3,6 @@ package pl.egalit.vocab.chooseCourse;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.egalit.vocab.R;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData.CourseTableMetaData;
 import pl.egalit.vocab.main.MainActivity;
@@ -14,19 +13,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.widget.Toast;
+import android.widget.CheckBox;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public abstract class ChooseCourseListFragment extends SherlockListFragment
 		implements LoaderCallbacks<Cursor> {
 
 	private static final String CHOSEN_COURSES_POSITIONS_PROPERTY = "chosenCoursesPositions";
-	private static final int SAVE_MENU_ITEM_ID = Menu.FIRST;
-	private static int SAVE_MENU_ITEM_ID_ORDER = Menu.FIRST + 100;
 	private ArrayList<CourseRowModel> oldModel;
 	private ArrayList<Integer> chosenCoursesPositions;
 	private List<CourseRowModel> model;
@@ -59,7 +54,6 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		saveThreads = new ThreadGroup("save threads");
 		if (savedInstanceState != null
 				&& savedInstanceState
@@ -74,18 +68,6 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 	}
 
 	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-		if (ChooseCourseSupport.isModelChanged(oldModel, model)) {
-			menu.add(Menu.NONE, SAVE_MENU_ITEM_ID, SAVE_MENU_ITEM_ID_ORDER,
-					"Save").setIcon(R.drawable.ic_menu_save)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-		}
-
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -96,56 +78,20 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 			startActivity(intent);
 			return true;
 
-		case SAVE_MENU_ITEM_ID:
-			if (ChooseCourseSupport.areAnyModelElementsDeselected(oldModel,
-					model)) {
-				confirmSave();
-			} else {
-				saveCourses();
-			}
-
-			break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-		return true;
 
 	}
 
-	private void confirmSave() {
-		SaveCoursesDialogFragment frag = SaveCoursesDialogFragment
-				.newInstance(this);
+	private void confirmSave(CheckBox cb) {
+		SaveCoursesDialogFragment frag = SaveCoursesDialogFragment.newInstance(
+				this, cb);
 		android.support.v4.app.FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		frag.show(transaction,
 				SaveCoursesDialogFragment.SAVE_COURSES_DIALOG_TAG);
 
-	}
-
-	public final class AnActionModeOfEpicProportions implements
-			ActionMode.Callback {
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			return true;
-		}
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return true;
-		}
-
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			Toast.makeText(getActivity(), "Got click: " + item,
-					Toast.LENGTH_SHORT).show();
-			mode.finish();
-			return true;
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			return;
-		}
 	}
 
 	private void addToModel(List<CourseRowModel> model, CourseDto dto,
@@ -160,16 +106,6 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 			m.setChosen(false);
 
 		}
-
-	}
-
-	public void refreshMenu() {
-		getActivity().invalidateOptionsMenu();
-	}
-
-	public void startActionMode() {
-		getSherlockActivity().startActionMode(
-				new AnActionModeOfEpicProportions());
 
 	}
 
@@ -191,7 +127,7 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 			position++;
 
 		}
-		refreshMenu();
+
 	}
 
 	public List<CourseDto> getChosenCourses() {
@@ -232,6 +168,7 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 			public void run() {
 				ContentValues cv = new ContentValues();
 				cv.put(CourseTableMetaData.COURSE_CHOSEN, isChosen);
+
 				String repChar = "?,";
 				StringBuffer buffer = new StringBuffer();
 				for (int i = 0; i < currentCourses.size(); i++) {
@@ -256,6 +193,19 @@ public abstract class ChooseCourseListFragment extends SherlockListFragment
 	public void onDestroy() {
 		saveThreads.interrupt();
 		super.onDestroy();
+
+	}
+
+	public void courseCheckedChange(boolean isChecked, CheckBox cb) {
+		if (ChooseCourseSupport.areAnyModelElementsDeselected(oldModel, model)) {
+			confirmSave(cb);
+		} else {
+			saveCourses();
+
+		}
+	}
+
+	public void cancelUnselect(CourseRowModel courseRowModel) {
 
 	}
 

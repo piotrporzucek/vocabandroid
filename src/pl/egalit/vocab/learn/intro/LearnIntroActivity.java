@@ -8,11 +8,14 @@ import pl.egalit.vocab.foundation.providers.CourseProviderMetaData.CourseTableMe
 import pl.egalit.vocab.foundation.providers.WordProviderMetaData;
 import pl.egalit.vocab.learn.words.WordActivity;
 import pl.egalit.vocab.main.MainActivity;
+import pl.egalit.vocab.model.Language;
+import pl.egalit.vocab.model.ParcelableCourse;
 import pl.egalit.vocab.shared.CourseDto;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -46,11 +49,14 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 		actionBar.setListNavigationCallbacks(adapter, this);
 		actionBar.setTitle(getString(R.string.choose_course));
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setIcon(getResources().getDrawable(
+				R.drawable.vokabes_icon_small));
+		disableStartLearningButton();
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
+	protected void onResume() {
+		super.onResume();
 		CourseDto course = getCurrentCourse();
 		if (course != null) {
 			tryToShowCourse(course);
@@ -78,11 +84,14 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 					new String[] { CourseTableMetaData._ID,
 							CourseTableMetaData.COURSE_NAME,
 							CourseTableMetaData.PASSWORD,
-							CourseTableMetaData.INITIALIZED },
-					CourseTableMetaData.INITIALIZED + "=1 OR "
-							+ CourseTableMetaData.ACTIVE + "=1", null,
-					CourseTableMetaData.ACTIVE + " DESC,"
-							+ CourseTableMetaData.INITIALIZED + " DESC");
+							CourseTableMetaData.INITIALIZED,
+							CourseTableMetaData.LANGUAGE },
+					CourseTableMetaData.COURSE_CHOSEN + "=? AND ("
+							+ CourseTableMetaData.INITIALIZED + "=? OR "
+							+ CourseTableMetaData.ACTIVE + "=?)", new String[] {
+							"1", "1", "1" }, CourseTableMetaData.ACTIVE
+							+ " DESC," + CourseTableMetaData.INITIALIZED
+							+ " DESC");
 		} else if (loaderId == 1) {
 			String courseId = bundle.getString("courseId");
 
@@ -113,14 +122,19 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 			if (c.getCount() == 0) {
 				noCourses();
 			}
-
 		} else if (loader.getId() == 1 && c != null
 				&& newWordsCountField != null) {
 			newWordsCountField.setText(c.getCount() + "");
+			if (c.getCount() != 0) {
+				enableStartLearningButton();
+			}
 
 		} else if (loader.getId() == 2 && c != null
 				&& repeatsCountField != null) {
 			repeatsCountField.setText(c.getCount() + "");
+			if (c.getCount() != 0) {
+				enableStartLearningButton();
+			}
 
 		} else if (loader.getId() == 3 && c != null) {
 			CourseDto course = getCurrentCourse();
@@ -134,6 +148,14 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 
 		}
 
+	}
+
+	private void enableStartLearningButton() {
+		findViewById(R.id.learn_intro_start_learning).setEnabled(true);
+	}
+
+	private void disableStartLearningButton() {
+		findViewById(R.id.learn_intro_start_learning).setEnabled(false);
 	}
 
 	private void noCourses() {
@@ -206,6 +228,16 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 	}
 
 	private void showCourseLearningDetails(CourseDto course) {
+		TextView courseName = (TextView) findViewById(R.id.course_name);
+		courseName.setText(course.getName());
+
+		Drawable img = getResources().getDrawable(
+				Language.getFlagResForLanguage(Language
+						.getLanguageForCode(course.getLanguage())));
+
+		img.setBounds(0, 0, 60, 60);
+		courseName.setCompoundDrawables(img, null, null, null);
+
 		Bundle bundle = new Bundle();
 		bundle.putString("courseId", course.getId().toString());
 		getSupportLoaderManager().destroyLoader(3);
@@ -227,8 +259,9 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 		String password = cursor.getString(2);
 		boolean initialized = cursor.getInt(3) != 0;
 		long courseId = cursor.getLong(0);
+		String language = cursor.getString(4);
 		CourseDto course = new CourseDto(courseId, courseName, password,
-				initialized);
+				initialized, language);
 		return course;
 	}
 
@@ -243,13 +276,17 @@ public class LearnIntroActivity extends SherlockFragmentActivity implements
 	public void startLearning(CourseDto courseDto) {
 
 		Intent intent = new Intent(this, WordActivity.class);
+		intent.putExtra("course", new ParcelableCourse(courseDto));
 		intent.putExtra("courseId", courseDto.getId());
 		startActivity(intent);
 	}
 
 	public void onStartLearningButtonClick(View view) {
+		if (!newWordsCountField.getText().equals("0")
+				|| !repeatsCountField.getText().equals("0")) {
+			startLearning(getCurrentCourse());
+		}
 
-		startLearning(getCurrentCourse());
 	}
 
 }

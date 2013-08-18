@@ -9,6 +9,6 @@
         android:id="@+id/choose_course_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="pl.egalit.vocab.chooseCourse.CurrentCourseListFragment" />
+        class="pl.egalit.vocab.chooseCourse.ChooseActiveCoursesListFragment" />
 
 </LinearLayout>

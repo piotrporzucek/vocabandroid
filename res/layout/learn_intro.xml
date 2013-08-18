@@ -3,25 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/background_light"
+    android:padding="7dp"
+    android:background="@drawable/vokabes_bg"
     android:orientation="vertical" >
+
+    <TextView        
+        android:id="@+id/course_name"
+        android:textColor="@color/courseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"                        
+        android:textSize="25sp" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"        
+        android:background="#646464" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/vokabes_card"
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:textColor="@android:color/black" >
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/learn_intro_start_learning"
         android:layout_width="match_parent"
-        android:layout_height="87dp"        
+        android:layout_height="87dp"
+        android:background="@color/learningStartButtonColor"
         android:onClick="onStartLearningButtonClick"
         android:text="@string/startLearning"
-        android:background="@color/learningStartButtonColor"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:textSize="25dp" >
-    </Button>
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </FrameLayout>
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

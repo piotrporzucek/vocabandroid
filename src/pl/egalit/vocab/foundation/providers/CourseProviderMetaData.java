@@ -4,7 +4,6 @@ import android.net.Uri;
 
 public class CourseProviderMetaData {
 	public static final String AUTHORITY = "pl.egalit.vocab.CourseProvider";
-	public static final String DATABASE_NAME = "vocab.db";
 	public static final int DATABASE_VERSION = 1;
 	public static final String COURSES_TABLE_NAME = "courses";
 	public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.pl.egalit.vocab.course";
@@ -27,6 +26,8 @@ public class CourseProviderMetaData {
 
 		public static final String COURSE_NAME = "name";
 
+		public static final String SCHOOL_ID = "school_id";
+
 		public static final String COURSE_DESCRIPTION = "description";
 
 		/**
@@ -46,6 +47,7 @@ public class CourseProviderMetaData {
 		public static final String INITIALIZED = "initialized";
 
 		public static final String PASSWORD = "password";
+		public static final String LANGUAGE = "language";
 
 	}
 }

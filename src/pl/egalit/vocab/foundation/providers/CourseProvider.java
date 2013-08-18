@@ -67,8 +67,8 @@ public class CourseProvider extends AbstractVocabProvider {
 		switch (uriType) {
 		case COURSES_COLLECTION_ARCHIVE_URI_INDICATOR:
 
-			return getCursorArchiveCourses(projection, selectionArgs,
-					sortOrder, queryBuilder, db);
+			return getCursorArchiveCourses(projection, selection,
+					selectionArgs, sortOrder, queryBuilder, db);
 		case COURSES_COLLECTION_FRESH_URI_INDICATOR:
 
 			return getCursorFreshCourses(projection, selection, selectionArgs,
@@ -86,12 +86,12 @@ public class CourseProvider extends AbstractVocabProvider {
 	}
 
 	private Cursor getCursorArchiveCourses(String[] projection,
-			String[] selectionArgs, String sortOrder,
+			String selection, String[] selectionArgs, String sortOrder,
 			SQLiteQueryBuilder queryBuilder, SQLiteDatabase db) {
 		Cursor cursor = queryBuilder.query(db, projection,
 				CourseTableMetaData.COURSE_CHOSEN + "=1 AND "
-						+ CourseTableMetaData.ACTIVE + "=0 ", selectionArgs,
-				null, null, sortOrder);
+						+ CourseTableMetaData.ACTIVE + "=0 AND " + selection,
+				selectionArgs, null, null, sortOrder);
 		cursor.setNotificationUri(getContext().getContentResolver(),
 				CourseProviderMetaData.CONTENT_ARCHIVE_URI);
 		return cursor;

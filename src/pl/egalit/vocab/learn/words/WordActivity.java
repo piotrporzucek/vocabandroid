@@ -1,115 +1,67 @@
 package pl.egalit.vocab.learn.words;
 
+import java.util.Locale;
+
 import pl.egalit.vocab.R;
 import pl.egalit.vocab.foundation.providers.WordProviderMetaData;
-import pl.egalit.vocab.foundation.providers.WordProviderMetaData.WordTableMetaData;
+import pl.egalit.vocab.model.Language;
+import pl.egalit.vocab.model.ParcelableCourse;
 import pl.egalit.vocab.shared.WordDto;
 import android.content.ContentUris;
-import android.database.Cursor;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class WordActivity extends SherlockFragmentActivity implements
-		LoaderCallbacks<Cursor> {
+		TextToSpeech.OnInitListener {
 
-	private WordsAdapter adapterNewWords;
-	private WordsAdapter adapterRepeats;
+	private final int MY_DATA_CHECK_CODE = 0;
+	private TextToSpeech textToSpeech;
+	private Language language;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		ParcelableCourse pc = getIntent().getExtras().getParcelable("course");
+		language = Language.getLanguageForCode(pc.getCourse().getLanguage());
+
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setIcon(getResources().getDrawable(
+				R.drawable.vokabes_icon_small));
 		setContentView(R.layout.learning_words);
-		adapterNewWords = new WordsAdapter(this, null);
-		adapterRepeats = new WordsAdapter(this, null);
-		getSupportLoaderManager().initLoader(1, getIntent().getExtras(), this);
-		WordFragment fragment = WordFragment.newInstance(adapterNewWords);
-		android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-		transaction.replace(R.id.wordFragment, fragment);
-		RelativeLayout layout = (RelativeLayout) findViewById(R.id.learningWordsLayout);
-		transaction.commit();
-		layout.invalidate();
+		Intent checkTTSIntent = new Intent();
+		checkTTSIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+		startActivityForResult(checkTTSIntent, MY_DATA_CHECK_CODE);
 
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
-		Long courseId = bundle.getLong("courseId");
-		if (loaderId == 0) {
-
-			return new CursorLoader(this,
-					Uri.parse("content://" + WordProviderMetaData.AUTHORITY
-							+ "/words/new/" + courseId), new String[] {
-							WordTableMetaData.WORD_EXPRESSION,
-							WordTableMetaData.WORD_ANSWER,
-							WordTableMetaData.WORD_EXAMPLE,
-							WordTableMetaData._ID }, null, null, null);
-		} else if (loaderId == 1) {
-
-			return new CursorLoader(this, Uri.parse("content://"
-					+ WordProviderMetaData.AUTHORITY + "/words/repeats/"
-					+ courseId), new String[] {
-					WordTableMetaData.WORD_EXPRESSION,
-					WordTableMetaData.WORD_ANSWER,
-					WordTableMetaData.WORD_EXAMPLE, WordTableMetaData._ID, },
-					null, null, null);
-		}
-		return null;
-
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor c) {
-		if (loader.getId() == 0) {
-			adapterNewWords.swapCursor(c);
-			checkIfAreAnyWord();
-			WordFragment fragment = (WordFragment) (getSupportFragmentManager()
-					.findFragmentById(R.id.wordFragment));
-			if (fragment != null) {
-				fragment.setNewWordsAdapter(adapterNewWords);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == MY_DATA_CHECK_CODE) {
+			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+				textToSpeech = new TextToSpeech(this, this);
+			} else {
+				Intent installTTSIntent = new Intent();
+				installTTSIntent
+						.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				startActivity(installTTSIntent);
 			}
 
-		} else if (loader.getId() == 1) {
-			adapterRepeats.swapCursor(c);
-			WordFragment fragment = (WordFragment) (getSupportFragmentManager()
-					.findFragmentById(R.id.wordFragment));
-			if (fragment != null) {
-				fragment.setRepeatsAdapter(adapterRepeats);
-			}
-			getSupportLoaderManager().initLoader(0, getIntent().getExtras(),
-					this);
 		}
-	}
-
-	private void checkIfAreAnyWord() {
-		if (adapterNewWords.getCount() == 0 && adapterRepeats.getCount() == 0) {
-			finish();
-		}
-
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		if (loader.getId() == 0) {
-			adapterNewWords.swapCursor(null);
-		} else if (loader.getId() == 1) {
-			adapterRepeats.swapCursor(null);
-		}
-
 	}
 
 	public void answer(View view) {
@@ -117,7 +69,15 @@ public class WordActivity extends SherlockFragmentActivity implements
 		findViewById(R.id.after_anwer_buttons).setVisibility(View.VISIBLE);
 		WordFragment fragment = (WordFragment) (getSupportFragmentManager()
 				.findFragmentById(R.id.wordFragment));
+		((TextView) findViewById(R.id.expression)).setTextColor(getResources()
+				.getColor(R.color.expressionAnswered));
 		fragment.setAnswerTextVisible(true);
+	}
+
+	public void sayCurrentWord(View view) {
+		WordFragment fragment = (WordFragment) (getSupportFragmentManager()
+				.findFragmentById(R.id.wordFragment));
+		fragment.sayCurrentWord();
 	}
 
 	public void badAnswer(View view) {
@@ -148,6 +108,9 @@ public class WordActivity extends SherlockFragmentActivity implements
 		if (hasNextWord) {
 			findViewById(R.id.after_anwer_buttons).setVisibility(View.GONE);
 			findViewById(R.id.answer_button).setVisibility(View.VISIBLE);
+			((TextView) findViewById(R.id.expression))
+					.setTextColor(getResources()
+							.getColor(android.R.color.black));
 		} else {
 			finish();
 		}
@@ -173,6 +136,47 @@ public class WordActivity extends SherlockFragmentActivity implements
 			return null;
 		}
 
+	}
+
+	@Override
+	public void onInit(int status) {
+		if (status == TextToSpeech.SUCCESS) {
+			textToSpeech.setLanguage(getLocale(language));
+		}
+		WordFragment fragment = WordFragment.newInstance();
+		android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		transaction.replace(R.id.wordFragment, fragment);
+		RelativeLayout layout = (RelativeLayout) findViewById(R.id.learningWordsLayout);
+		transaction.commit();
+		layout.invalidate();
+
+	}
+
+	private Locale getLocale(Language language) {
+		for (Locale locale : Locale.getAvailableLocales()) {
+			if (locale.getLanguage().equals(language.getCode())) {
+				return locale;
+			}
+		}
+		Toast.makeText(this,
+				getResources().getString(R.string.not_supported_language),
+				Toast.LENGTH_LONG).show();
+		return Locale.UK;
+	}
+
+	@Override
+	protected void onDestroy() {
+		if (textToSpeech != null) {
+			textToSpeech.shutdown();
+		}
+		super.onDestroy();
+
+	}
+
+	public TextToSpeech getTextToSpeech() {
+		return textToSpeech;
 	}
 
 }

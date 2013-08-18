@@ -32,6 +32,8 @@ public class WordProvider extends AbstractVocabProvider {
 	private static final int WORD_COLLECTION_URI_INDICATOR = 2;
 	private static final int WORD_STATE_UPDATE_URI_INDICATOR = 3;
 
+	private static final int WORD_COLLECTION_SEARCH_URI_INDICATOR = 4;
+
 	static {
 		wordProjectionMap = new HashMap<String, String>();
 		wordProjectionMap.put(CourseTableMetaData._ID, CourseTableMetaData._ID);
@@ -48,6 +50,8 @@ public class WordProvider extends AbstractVocabProvider {
 				WORD_COLLECTION_URI_INDICATOR);
 		wordUriMatcher.addURI(WordProviderMetaData.AUTHORITY,
 				"words/state/#/#", WORD_STATE_UPDATE_URI_INDICATOR);
+		wordUriMatcher.addURI(WordProviderMetaData.AUTHORITY, "words/search/*",
+				WORD_COLLECTION_SEARCH_URI_INDICATOR);
 
 	}
 
@@ -63,11 +67,19 @@ public class WordProvider extends AbstractVocabProvider {
 		Cursor cursor = null;
 		SQLiteDatabase db = databaseHelper.getWritableDatabase();
 		switch (uriType) {
+		case WORD_COLLECTION_SEARCH_URI_INDICATOR:
+			String query = uri.getLastPathSegment();
+			selection = WordTableMetaData.WORD_ANSWER + " LIKE '%" + query
+					+ "%'" + " OR " + WordTableMetaData.WORD_EXPRESSION
+					+ " LIKE '%" + query + "%'";
+			return queryBuilder.query(db, projection, selection, selectionArgs,
+					null, null, sortOrder);
+
 		case WORD_COLLECTION_URI_INDICATOR:
 			String courseId = uri.getPathSegments().get(1);
 			queryBuilder.appendWhere("courseId=" + courseId);
 			cursor = queryBuilder.query(db, projection, selection,
-					selectionArgs, sortOrder, null, null);
+					selectionArgs, null, null, sortOrder);
 
 			final int requestId = ServiceHelper.getInstance()
 					.startOperationGetWords(getContext(), handler, receiver,
@@ -99,7 +111,7 @@ public class WordProvider extends AbstractVocabProvider {
 					+ courseId);
 
 			cursor = queryBuilder.query(db, projection, selection,
-					selectionArgs, sortOrder, null, null, limit);
+					selectionArgs, null, null, sortOrder, limit);
 			cursor.setNotificationUri(getContext().getContentResolver(),
 					WordProviderMetaData.CONTENT_NEW_WORDS_URI);
 			return cursor;
@@ -110,7 +122,7 @@ public class WordProvider extends AbstractVocabProvider {
 					.appendWhere("lastShownOn is not null AND nextShowOn is not null AND DATE(nextShowOn) <= DATE('now') AND courseId="
 							+ courseId);
 			cursor = queryBuilder.query(db, projection, selection,
-					selectionArgs, sortOrder, null, null);
+					selectionArgs, null, null, sortOrder);
 
 			cursor.setNotificationUri(getContext().getContentResolver(),
 					WordProviderMetaData.CONTENT_REPEAT_WORDS_URI);

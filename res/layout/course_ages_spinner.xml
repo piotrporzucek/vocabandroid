@@ -17,6 +17,6 @@
         android:layout_centerInParent="true"
         android:gravity="center|fill_horizontal"
         android:onClick="showDetails"
-        android:text="@string/more" />
+         />
 
 </RelativeLayout>

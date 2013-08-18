@@ -7,7 +7,9 @@ import pl.egalit.vocab.foundation.db.MySQLiteHelper;
 import pl.egalit.vocab.foundation.db.UpdateStatus;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData.CourseTableMetaData;
+import pl.egalit.vocab.foundation.providers.SchoolProviderMetaData;
 import pl.egalit.vocab.foundation.providers.WordProviderMetaData;
+import pl.egalit.vocab.foundation.service.AbstractEntityService;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,11 +26,11 @@ public class ServiceHelper {
 
 	private static ServiceHelper instance;
 
-	private int currentCoursesRequestId = 0;
-	private int currentWordsRequestId = 0;
+	private final int currentCoursesRequestId = 0;
+	private final int currentWordsRequestId = 0;
 
-	private Map<Integer, Intent> pendingCourseOperations = new HashMap<Integer, Intent>();
-	private Map<Integer, Intent> pendingWordsOperations = new HashMap<Integer, Intent>();
+	private final Map<Integer, Intent> pendingCourseOperations = new HashMap<Integer, Intent>();
+	private final Map<Integer, Intent> pendingWordsOperations = new HashMap<Integer, Intent>();
 
 	private ServiceHelper() {
 
@@ -98,6 +100,10 @@ public class ServiceHelper {
 		intent.setAction("pl.egalit.vocab.GET_COURSES");
 		intent.setData(CourseProviderMetaData.CONTENT_FRESH_URI);
 		intent.setType(CourseProviderMetaData.CONTENT_TYPE);
+		long schoolId = Setup.getSchoolId(context);
+		intent.putExtra("paramNames", new String[] { "schoolId" });
+		intent.putExtra("params", new String[] { "" + schoolId });
+		intent.putExtra(AbstractEntityService.FORCE_CONNECTION_AVAILABLE, true);
 		return startOperation(context, handler, receiver, databaseHelper,
 				intent, pendingCourseOperations, currentCoursesRequestId);
 	}
@@ -111,7 +117,23 @@ public class ServiceHelper {
 		intent.setAction("pl.egalit.vocab.GET_WORDS");
 		intent.setData(WordProviderMetaData.CONTENT_WORDS_URI);
 		intent.setType(WordProviderMetaData.CONTENT_TYPE);
-		intent.putExtra("entityId", courseId);
+		intent.putExtra("paramNames", new String[] { "entityId" });
+		intent.putExtra("params", new String[] { "" + courseId });
+
+		return startOperation(context, handler, receiver, databaseHelper,
+				intent, pendingCourseOperations, currentCoursesRequestId);
+	}
+
+	public int startOperationGetSchools(Context context, Handler handler,
+			ResultReceiver receiver, MySQLiteHelper databaseHelper) {
+		setUpdatingStatus(
+				SchoolProviderMetaData.SchoolTableMetaData.TABLE_NAME,
+				UpdateStatus.UPDATING, databaseHelper);
+		final Intent intent = new Intent();
+		intent.setAction("pl.egalit.vocab.GET_SCHOOLS");
+		intent.setData(SchoolProviderMetaData.CONTENT_FRESH_URI);
+		intent.setType(SchoolProviderMetaData.CONTENT_TYPE);
+		intent.putExtra(AbstractEntityService.FORCE_CONNECTION_AVAILABLE, true);
 		return startOperation(context, handler, receiver, databaseHelper,
 				intent, pendingCourseOperations, currentCoursesRequestId);
 	}

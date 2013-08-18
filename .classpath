@@ -7,7 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="shared"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="libs/requestfactory-client.jar" sourcepath="libs/requestfactory-client-src.jar"/>
 	<classpathentry kind="lib" path="libs/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="lib" path="libs/spring-android-core-1.0.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="libs/spring-android-core-1.0.0.RELEASE.jar"/>

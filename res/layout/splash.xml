@@ -3,28 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
+    android:background="@drawable/vokabes_bg"
+    android:padding="15dp"
     android:gravity="center"
-    android:id="@+id/available_accounts"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/schoolName"
+    
+    <TextView        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="5dp"
-        android:drawableStart="@drawable/oei"
-        android:gravity="center_horizontal"
-        android:text="@string/schoolName"
-        android:textSize="20sp" />
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/vokabes_full_title" />
 
-    <TextView
-        android:id="@+id/splashText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="@string/splashText" />
-
+    <ImageView android:src="@drawable/vokabes_flags_texts" android:layout_height="253dp" android:layout_width="229dp"
+     android:layout_gravity="center" />
     
 	
     

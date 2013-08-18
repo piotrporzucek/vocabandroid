@@ -6,35 +6,40 @@ import android.os.Parcelable;
 
 public class ParcelableCourse implements Parcelable {
 
-	public static final Parcelable.Creator<CourseDto> CREATOR = new Parcelable.Creator<CourseDto>() {
-		public CourseDto createFromParcel(final Parcel source) {
-			CourseDto course = new CourseDto();
-			course.setId(source.readLong());
-			course.setName(source.readString());
-
-			return course;
+	public static final Parcelable.Creator<ParcelableCourse> CREATOR = new Parcelable.Creator<ParcelableCourse>() {
+		@Override
+		public ParcelableCourse createFromParcel(final Parcel source) {
+			return new ParcelableCourse(source);
 
 		};
 
 		@Override
-		public CourseDto[] newArray(int size) {
-			return new CourseDto[size];
+		public ParcelableCourse[] newArray(int size) {
+			return new ParcelableCourse[size];
 		}
 	};
 	private String name;
 	private Long id;
 	private boolean chosen;
-	private CourseDto course;
+	private String language;
 
 	public ParcelableCourse(CourseDto course) {
 
 		this.name = course.getName();
 		this.id = course.getId();
-		this.course = course;
+		this.language = course.getLanguage();
+
 	}
 
 	public ParcelableCourse() {
 
+	}
+
+	public ParcelableCourse(Parcel source) {
+		this.id = source.readLong();
+		this.name = source.readString();
+		this.chosen = source.readByte() != 0;
+		this.language = source.readString();
 	}
 
 	@Override
@@ -47,14 +52,14 @@ public class ParcelableCourse implements Parcelable {
 		dest.writeLong(id);
 		dest.writeString(name);
 		dest.writeByte(chosen ? (byte) 1 : 0);
+		dest.writeString(language);
 	}
 
 	public CourseDto getCourse() {
-		if (course == null) {
-			course = new CourseDto();
-			course.setId(id);
-			course.setName(name);
-		}
+		CourseDto course = new CourseDto();
+		course.setId(id);
+		course.setName(name);
+		course.setLanguage(language);
 		return course;
 
 	}

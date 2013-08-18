@@ -8,15 +8,31 @@
         android:id="@+id/course_chosen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_vokabes"
         android:layout_alignParentLeft="true" />
-    <Button
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"         
+        android:id="@+id/course_flag"
+        android:src="@drawable/vokabes_unknown"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="5dp"
+        android:gravity="center|fill_horizontal"
+        />
+    
+    <ImageButton
         android:id="@+id/course_details_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
+        android:layout_marginRight="5dp"
         android:gravity="center|fill_horizontal"
-        android:onClick="showDetails"
+        android:onClick="showDetails"        
+        android:background="@drawable/course_info_details"
+        android:visibility="gone"
         android:text="@string/more" />
+    
 
 </RelativeLayout>

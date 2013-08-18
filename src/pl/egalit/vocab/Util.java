@@ -19,8 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -34,10 +32,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
-
-import com.google.web.bindery.event.shared.SimpleEventBus;
-import com.google.web.bindery.requestfactory.shared.RequestFactory;
-import com.google.web.bindery.requestfactory.vm.RequestFactorySource;
 
 /**
  * Utility methods for getting the base URL for client-server communication and
@@ -86,11 +80,6 @@ public class Util {
 	 * Key for device registration id in shared preferences.
 	 */
 	public static final String DEVICE_REGISTRATION_ID = "deviceRegistrationID";
-
-	/*
-	 * URL suffix for the RequestFactory servlet.
-	 */
-	public static final String RF_METHOD = "/gwtRequest";
 
 	/**
 	 * An intent name for receiving registration/unregistration status.
@@ -154,31 +143,6 @@ public class Util {
 			URL_MAP.put(context, url);
 		}
 		return url;
-	}
-
-	/**
-	 * Creates and returns an initialized {@link RequestFactory} of the given
-	 * type.
-	 */
-	public static <T extends RequestFactory> T getRequestFactory(
-			Context context, Class<T> factoryClass) {
-		T requestFactory = RequestFactorySource.create(factoryClass);
-
-		SharedPreferences prefs = getSharedPreferences(context);
-		String authCookie = prefs.getString(Util.AUTH_COOKIE, null);
-
-		String uriString = Util.getBaseUrl(context) + RF_METHOD;
-		URI uri;
-		try {
-			uri = new URI(uriString);
-		} catch (URISyntaxException e) {
-			Log.w(TAG, "Bad URI: " + uriString, e);
-			return null;
-		}
-		requestFactory.initialize(new SimpleEventBus(),
-				new AndroidRequestTransport(uri, authCookie));
-
-		return requestFactory;
 	}
 
 	/**

@@ -4,6 +4,8 @@ import java.io.File;
 
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData.CourseTableMetaData;
+import pl.egalit.vocab.foundation.providers.SchoolProviderMetaData;
+import pl.egalit.vocab.foundation.providers.SchoolProviderMetaData.SchoolTableMetaData;
 import pl.egalit.vocab.foundation.providers.WordProviderMetaData;
 import pl.egalit.vocab.foundation.providers.WordProviderMetaData.WordTableMetaData;
 import android.annotation.SuppressLint;
@@ -16,17 +18,24 @@ import android.os.Environment;
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = Environment
-			.getExternalStorageDirectory() + File.separator + "vocab.db";
-	private static final int DATABASE_VERSION = 4;
+			.getExternalStorageDirectory() + File.separator + "vokabes.db";
+	private static final int DATABASE_VERSION = 32;
+
+	private static final String DATABASE_CREATE_SCHOOL_TABLE = "create table "
+			+ SchoolTableMetaData.TABLE_NAME + "(" + SchoolTableMetaData._ID
+			+ " integer primary key, " + SchoolTableMetaData.SCHOOL_NAME
+			+ " text not null, " + SchoolTableMetaData._STATUS + " text,"
+			+ SchoolTableMetaData.SCHOOL_CITY + " text not null);";
 
 	private static final String DATABASE_CREATE_COURSES_TABLE = "create table "
-			+ CourseProviderMetaData.COURSES_TABLE_NAME + "("
-			+ CourseTableMetaData._ID + " integer primary key, "
-			+ CourseTableMetaData._STATUS + " text,"
+			+ CourseTableMetaData.TABLE_NAME + "(" + CourseTableMetaData._ID
+			+ " integer primary key, " + CourseTableMetaData._STATUS + " text,"
 			+ CourseTableMetaData.START_DATE + " text,"
+			+ CourseTableMetaData.SCHOOL_ID + " integer,"
 			+ CourseTableMetaData.END_DATE + " text,"
 			+ CourseTableMetaData.COURSE_NAME + " text unique not null, "
 			+ CourseTableMetaData.PASSWORD + " text not null, "
+			+ CourseTableMetaData.LANGUAGE + " text,"
 			+ CourseTableMetaData.COURSE_DESCRIPTION + " test,"
 			+ CourseTableMetaData.COURSE_CHOSEN
 			+ " integer not null default 0," + CourseTableMetaData.ACTIVE
@@ -38,8 +47,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ "("
 			+ "ENTITY"
 			+ " text, "
-			+ "ENTITY_ID long, "
-			+ "LASTUPDATE" + " long)";
+			+ "ENTITYID long, "
+			+ "schoolID long, " + "LASTUPDATE" + " long)";
 
 	private static final String DATABASE_CREATE_WORDS_TABLE = "create table "
 			+ WordProviderMetaData.WORDS_TABLE_NAME + "("
@@ -57,6 +66,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_DROP_COURSES = "DROP TABLE IF EXISTS "
 			+ CourseProviderMetaData.COURSES_TABLE_NAME;
+	private static final String DATABASE_DROP_SCHOOLS = "DROP TABLE IF EXISTS "
+			+ SchoolProviderMetaData.SchoolTableMetaData.TABLE_NAME;
 	private static final String DATABASE_DROP_UPDATE_STATUS = "DROP TABLE IF EXISTS "
 			+ "UPDATE_STATUS";
 	private static final String DATABASE_DROP_WORDS = "DROP TABLE IF EXISTS "
@@ -74,6 +85,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		database.execSQL(DATABASE_CREATE_COURSES_TABLE);
 		database.execSQL(DATABASE_CREATE_UPDATE_STATUS_TABLE);
 		database.execSQL(DATABASE_CREATE_WORDS_TABLE);
+		database.execSQL(DATABASE_CREATE_SCHOOL_TABLE);
 	}
 
 	@Override
@@ -81,6 +93,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 		db.execSQL(DATABASE_DROP_WORDS);
 		db.execSQL(DATABASE_DROP_COURSES);
+		db.execSQL(DATABASE_DROP_SCHOOLS);
 		db.execSQL(DATABASE_DROP_UPDATE_STATUS);
 		onCreate(db);
 	}

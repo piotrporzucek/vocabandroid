@@ -1,5 +1,6 @@
 package pl.egalit.vocab.chooseCourse;
 
+import pl.egalit.vocab.Setup;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData;
 import pl.egalit.vocab.foundation.providers.CourseProviderMetaData.CourseTableMetaData;
 import android.database.Cursor;
@@ -16,7 +17,11 @@ public class ArchiveCourseListFragment extends ChooseCourseListFragment {
 				CourseProviderMetaData.CONTENT_ARCHIVE_URI, new String[] {
 						CourseTableMetaData._ID,
 						CourseTableMetaData.COURSE_NAME,
-						CourseTableMetaData.COURSE_CHOSEN }, null, null,
+						CourseTableMetaData.COURSE_CHOSEN,
+						CourseTableMetaData.LANGUAGE },
+				CourseTableMetaData.SCHOOL_ID + "=?", new String[] { ""
+						+ Setup.getSchoolId(getActivity()
+								.getApplicationContext()) },
 				CourseTableMetaData.COURSE_NAME);
 
 	}

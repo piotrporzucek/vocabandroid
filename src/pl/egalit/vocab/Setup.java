@@ -14,6 +14,9 @@
  *******************************************************************************/
 package pl.egalit.vocab;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 /**
  * Class to be customized with app-specific data. The Eclipse plugin will set
  * these values when the project is created.
@@ -38,5 +41,12 @@ public class Setup {
 	 */
 	public static final String SENDER_ID = "piotr.porzucek@gmail.com";
 
-	public static final String SCHOOL_ID = "1";
+	public static long getSchoolId(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(
+				"pl.egalit.vocab_preferences", 0);
+		String result = prefs.getString(
+				context.getResources().getString(R.string.selected_school_id),
+				null);
+		return result != null ? Long.parseLong(result) : -1;
+	}
 }
